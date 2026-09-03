@@ -67,14 +67,70 @@ public class SinglyLinkedList<E> {
 
     // Write your codes below
     public String toString(){
-     
+        if (isEmpty()) return "";
+
+        StringBuilder text = new StringBuilder();
+        Node<E> walk = head;
+
+        for(int i = 0; i < size; i++) {
+            text.append(walk.getElement().toString());
+            walk = walk.getNext();
+        }
+
+        return text.toString();
     }
 
     public E removeLast(){
-      
+        if (isEmpty()) return null;
+
+        Node<E> walk = head;
+        E answer = tail.getElement();
+        
+        if (head == tail) {
+            head = null;
+            tail = null;
+        } else {
+            while(walk.getNext() != tail) {
+                walk = walk.getNext();
+            }
+            walk.setNext(null);
+            tail = walk;
+        }
+
+        size--;
+        return answer;
     }
 
-    public void reverse(){       
-                 
+public void reverse(){
+        if (isEmpty()) return ;
+
+        Node<E> oldHead = head;
+        Node<E> oldTail = tail;
+        
+        //head is the old tail, but it's next element is still null
+        head = oldTail;
+        tail = oldHead;
+        Node<E> walk = head;
+
+        while(tail.getNext() != null) {
+            //previous starts from the old head
+            Node<E> prev = tail;
+            for (int i = 0; i < size; i++ ){
+                //get the node before the old tail.
+                if (!prev.getNext().equals(walk)) {
+                    prev = prev.getNext();
+                } else {
+                    break;
+                }
+            }
+            //walk points to the next element for the new head, 
+            //which was the previous element for old tail
+            walk.setNext(prev);
+            walk = prev;
+
+            if (walk.equals(oldHead)) {
+                tail.setNext(null);
+            }
+        }
     }
 }
